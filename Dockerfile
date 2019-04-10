@@ -61,7 +61,7 @@ RUN set -ex \
     && pip install pytz \
     && pip install pyOpenSSL \
     && pip install pyodbc\
-    && pip install xlrd
+    && pip install xlrd \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
     && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,mysql,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==${AIRFLOW_VERSION} \
