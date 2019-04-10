@@ -25,25 +25,30 @@ ENV LC_ALL en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
 ENV LC_MESSAGES en_US.UTF-8
 
+RUN apt update && apt install -y gcc tdsodbc unixodbc-dev \
+ && apt install unixodbc-bin -y  \
+ && apt clean -y && apt install -y unzip \
+ && apt install -y libglib2.0-0=2.50.3-2 \
+    libnss3=2:3.26.2-1.1+deb9u1 \
+    libgconf-2-4=3.2.6-4+b1 \
+    libfontconfig1=2.11.0-6.7+b1
+
+RUN echo "[FreeTDS]\n\
+Description = FreeTDS Driver \n\
+Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so\n\
+Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so" >> /etc/odbcinst.ini
+
 RUN set -ex \
     && buildDeps=' \
-        freetds-dev \
-        libkrb5-dev \
-        libsasl2-dev \
-        libssl-dev \
-        libffi-dev \
-        libpq-dev \
         git \
     ' \
     && apt-get update -yqq \
     && apt-get upgrade -yqq \
     && apt-get install -yqq --no-install-recommends \
         $buildDeps \
-        freetds-bin \
-        build-essential \
-        default-libmysqlclient-dev \
         apt-utils \
         curl \
+        sudo \
         rsync \
         netcat \
         locales \
@@ -54,8 +59,6 @@ RUN set -ex \
     && pip install -U pip setuptools wheel \
     && pip install pytz \
     && pip install pyOpenSSL \
-    && pip install pyodbc \
-    && pip install xlrd \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
     && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,mysql,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==${AIRFLOW_VERSION} \
