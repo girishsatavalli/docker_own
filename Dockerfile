@@ -84,8 +84,9 @@ COPY config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
+RUN mkdir /usr/local/airflow/dags
 
-RUN chmod 777 ${AIRFLOW_HOME}
+RUN chmod a+rwx /usr/local/airflow/dags
 
 EXPOSE 8080 5555 8793
 
