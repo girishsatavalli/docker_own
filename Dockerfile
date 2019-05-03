@@ -85,7 +85,7 @@ COPY config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
 
-RUN chmod -R a+rwx /usr/local/airflow
+RUN sudo chmod -R a+rwx /usr/local/airflow
 
 EXPOSE 8080 5555 8793
 
